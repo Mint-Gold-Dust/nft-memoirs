@@ -1,0 +1,49 @@
+{
+  "name": "nft-memoirs",
+  "version": "0.1.0",
+  "private": "true",
+  "scripts": {
+    "setup": "npm install && npm run install:app && npm run install:client",
+    "install:app": "npm --prefix app install",
+    "install:client": "npm --prefix client install",
+    "develop": "concurrently \"npm:start:client\" \"npm:start:app\"",
+    "start": "ceramic daemon",
+    "start:app": "npm --prefix app run start",
+    "start:client": "npm --prefix client run start",
+    "lint": "eslint . --fix",
+    "format": "npm-run-all -p format:*",
+    "format:code": "yarn prettier \"**/*.js\" --write",
+    "format:other": "yarn prettier \"**/*.{md,css,scss,yaml,yml}\" --write"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.5",
+    "@babel/eslint-parser": "^7.17.0",
+    "@babel/preset-react": "^7.16.7",
+    "@ceramicnetwork/cli": "^1.11.1",
+    "concurrently": "^7.0.0",
+    "eslint": "^8.9.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "lint-staged": "^12.3.4",
+    "node-pre-gyp": "^0.17.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.5.1"
+  },
+  "lint-staged": {
+    "*.{js,md,css,scss,yaml,yml}": [
+      "prettier --write"
+    ],
+    "*.js": [
+      "eslint --fix"
+    ]
+  },
+  "engines": {
+    "node": "16.x",
+    "npm": "8.x"
+  },
+  "license": "MIT"
+}
