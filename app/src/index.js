@@ -1,20 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from '@self.id/react';
-import App from './App';
-import { EthereumContextProvider } from './providers/EthereumContext';
 import './styles/index.css';
+import App from './App';
 
-const config = {
-  ceramic: 'testnet-clay',
-};
+// ctx
+import { CeramicContextProvider } from './providers/CeramicContext';
+import { EthereumContextProvider } from './providers/EthereumContext';
+
+// components
+import NavBar from '../src/components/NavBar';
+
+// theme
+import { theme } from './themes/theme';
+import { ThemeProvider } from '@mui/material';
 
 ReactDOM.render(
   <React.StrictMode>
     <EthereumContextProvider>
-      <Provider client={config}>
+      <CeramicContextProvider>
+        <ThemeProvider theme={theme}>
+          <NavBar />
           <App />
-      </Provider>
+        </ThemeProvider>
+      </CeramicContextProvider>
     </EthereumContextProvider>
   </React.StrictMode>,
   document.getElementById('root'),
