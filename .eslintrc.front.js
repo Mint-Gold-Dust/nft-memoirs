@@ -56,6 +56,7 @@ module.exports = {
     'quote-props': ['error', 'as-needed'],
     'import/order': 'error',
     'react/jsx-filename-extension': ['error', { extensions: ['.js', '.jsx'] }],
+    'react/jsx-fragments': 'off',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'error',
   },
