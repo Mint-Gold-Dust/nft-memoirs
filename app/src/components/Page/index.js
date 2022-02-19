@@ -1,6 +1,20 @@
 import React from 'react';
-import { AutoComplete, Card, Display, Link,  Page as BasePage, Spacer, Text } from '@geist-ui/core';
+import { AutoComplete, Card, Display, Link, Page as BasePage, Spacer, Text } from '@geist-ui/core';
 import Search from '@geist-ui/icons/search';
+
+// Web3
+import { useViewerConnection } from '@self.id/react';
+import { EthereumAuthProvider } from '@self.id/web';
+import { EthereumContext } from '../../providers/EthereumContext';
+
+
+// MUI
+
+import { SpeedDial, SpeedDialIcon, SpeedDialAction } from '@mui/material'
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import CloudOffIcon from '@mui/icons-material/CloudOff';
 
 const memoirs = [{
   title: 'Awesome NFT memoir, writen in Latin',
@@ -11,6 +25,42 @@ const memoirs = [{
 }];
 
 function Page() {
+  const [connection, connect, disconnect] = useViewerConnection();
+  const { ethereumProvider, isConnected, connectWallet } = React.useContext(EthereumContext);
+  const [actions, setActions] = React.useState([]);
+
+
+  const authenticate = () => {
+    if (isConnected) {
+      ethereumProvider.request({ method: 'eth_requestAccounts' })
+        .then((addresses) => new EthereumAuthProvider(ethereumProvider, addresses[0]))
+        .then(connect);
+    } else {
+      connectWallet();
+    }
+  };
+
+  React.useEffect(() => {
+    if (isConnected == true) {
+      authenticate()
+    }
+  }, [isConnected]);
+
+  React.useEffect(() => {
+    if (isConnected) {
+      const a = [
+        { icon: <AddBoxIcon />, name: 'Add Memoir', action: null },
+        { icon: <AccountCircleIcon />, name: 'Connected', action: null },
+        { icon: <CloudOffIcon />, name: 'Disconnect', action: disconnect() }
+      ]
+      setActions(a)
+    } else {
+      const a = [
+        { icon: <AccountBalanceWalletIcon />, name: 'Connect Wallet', action: authenticate() }
+      ]
+      setActions(a)
+    }
+  }, [isConnected])
 
   return (
     <BasePage width="800px" padding={0}>
@@ -37,11 +87,27 @@ function Page() {
         </Text>
       </Display>
 
-      <AutoComplete icon={<Search />} scale={3/2} clearable placeholder="Search here" width="100%">
+      <AutoComplete icon={<Search />} scale={3 / 2} clearable placeholder="Search here" width="100%">
         <AutoComplete.Searching>
           Loading results ...
         </AutoComplete.Searching>
       </AutoComplete>
+
+      <div>
+        <SpeedDial
+          ariaLabel="SpeedDial"
+          sx={{ position: 'fixed', bottom: 16, right: 16 }}
+          icon={<SpeedDialIcon />}>
+          {actions.map((action) => (
+            <SpeedDialAction
+              key={action.name}
+              icon={action.icon}
+              tooltipTitle={action.name}
+              onClick={action.action}
+            />
+          ))}
+        </SpeedDial>
+      </div>
 
       {
         memoirs.map((memoir) => (
@@ -50,7 +116,7 @@ function Page() {
               <Text h4 my={0}>{memoir.title}</Text>
               <Text>{memoir.content}</Text>
             </Card>
-            <Spacer h={0.5}/>
+            <Spacer h={0.5} />
           </>
         ))
       }

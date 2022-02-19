@@ -5,12 +5,6 @@ import { EthereumContext } from './providers/EthereumContext';
 import Page from './components/Page';
 
 function App() {
-  const { ceramic, connectAndAuthenticate, isAuthenticated, isConnected } = useContext(CeramicContext);
-  const { ethereumProvider, isConnected: walletIsConnected } = useContext(EthereumContext);
-
-  const onClick = () => {
-    connectAndAuthenticate();
-  };
 
   return (
     <Page />
