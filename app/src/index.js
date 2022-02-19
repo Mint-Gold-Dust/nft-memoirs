@@ -1,21 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { GeistProvider, CssBaseline } from '@geist-ui/core'
-
-import './styles/index.css';
+import { Provider } from '@self.id/react';
 import App from './App';
-import { CeramicContextProvider } from './providers/CeramicContext';
 import { EthereumContextProvider } from './providers/EthereumContext';
+import './styles/index.css';
+
+const config = {
+  ceramic: 'testnet-clay',
+};
 
 ReactDOM.render(
   <React.StrictMode>
     <EthereumContextProvider>
-      <CeramicContextProvider>
-        <GeistProvider>
-          <CssBaseline />
-          <App />
-        </GeistProvider>
-      </CeramicContextProvider>
+      <Provider client={config}>
+        <App />
+      </Provider>
     </EthereumContextProvider>
   </React.StrictMode>,
   document.getElementById('root'),
