@@ -12,6 +12,8 @@ import {
   Textarea,
 } from '@geist-ui/core';
 import { createMemoirs } from '../../CeramicServices';
+import { useViewerConnection, useViewerID, usePublicRecord, RequestClient } from '@self.id/react';
+
 
 import Drawer from '../Drawer';
 
@@ -21,6 +23,8 @@ function EditForm({ onClose, onSubmit,  }) {
   const [nft, setNft] = useState({});
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const did = useViewerID();
+
 
   const onSelect = (nft) => {
     setIsDrawerOpen(false);
@@ -33,8 +37,9 @@ function EditForm({ onClose, onSubmit,  }) {
       title: title, 
       content: content,
     })
-      .then(() => {
-        onSubmit(); 
+      .then((result) => {
+        console.log('result')
+        onSubmit(result.content); 
         setIsLoading(false);
       })
       .catch(console.log)
