@@ -12,19 +12,16 @@ import { rootSchema, memoirSchema } from './schemas';
 
 // const did = useViewerID();
 
-export const createMemoirs = async (did,content, schemaID) => {
-  let newDoc = await did.client.tileLoader.create(content, {schemaID});
-  return newDoc;
+export const createMemoirs = (did,content, schemaID) => {
+  return did.client.tileLoader.create(content, {schemaID});
 };
 
-export const createSchema = async (did, schemaObject) => {
-    const newSchemaID = await did.client.tileLoader.create(schemaObject);
-    return newSchemaID;
+export const createSchema = (did, schemaObject) => {
+    return did.client.tileLoader.create(schemaObject);
   };
 
-export const loadDoc = async (did, id) => {
-  const loadDoc = await did.client.tileLoader.load(id);
-  return loadDoc;
+export const loadDoc = (did, id) => {
+  return  did.client.tileLoader.load(id);
 };
 
 

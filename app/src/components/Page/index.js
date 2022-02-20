@@ -13,6 +13,7 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CloudOffIcon from '@mui/icons-material/CloudOff';
+import {createMemoirs,createSchema, loadDoc} from './CeramicServices'
 
 const memoirs = [{
   title: 'Awesome NFT memoir, writen in Latin',
@@ -59,6 +60,11 @@ function Page() {
       setActions(a)
     }
   }, [isConnected])
+
+  async function readProfile() {
+    const 
+
+  }
 
   return (
     <BasePage width="800px" padding={0}>
