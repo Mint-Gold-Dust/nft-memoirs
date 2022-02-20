@@ -41,7 +41,6 @@ const memoirSchema = {
   required: [
     'title',
     'content',
-    'nft',
   ],
 };
 

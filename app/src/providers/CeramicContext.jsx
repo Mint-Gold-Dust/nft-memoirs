@@ -35,6 +35,10 @@ const CeramicContextProvider = ({ children, config = {} }) => {
                     .then(() => {
                         const client = new CeramicClient(CERAMIC_API_URL);
 
+                        const self = new SelfID({ client })
+
+                        console.log('self',self)
+
                         const did = new DID({
                             provider: threeID.getDidProvider(),
                             resolver: {
