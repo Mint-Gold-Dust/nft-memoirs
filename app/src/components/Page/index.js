@@ -7,9 +7,7 @@ import { useViewerConnection } from '@self.id/react';
 import { EthereumAuthProvider } from '@self.id/web';
 import { EthereumContext } from '../../providers/EthereumContext';
 
-
 // MUI
-
 import { SpeedDial, SpeedDialIcon, SpeedDialAction } from '@mui/material'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
