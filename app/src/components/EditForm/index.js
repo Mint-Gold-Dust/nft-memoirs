@@ -14,6 +14,9 @@ import {
 
 import Drawer from '../Drawer';
 
+import { createMemoirs, createSchema, loadDoc } from '././../../CeramicServices';
+
+
 function EditForm({ onClose }) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -70,7 +73,10 @@ function EditForm({ onClose }) {
               <Button auto onClick={onClose}>Cancel</Button>
             </Grid>
             <Grid padding={1}>
-              <Button loading={isLoading} auto type="secondary" onClick={() => setIsLoading(true)}>Submit</Button>
+              <Button loading={isLoading} auto type="secondary" onClick={(
+
+
+              ) => setIsLoading(true)}>Submit</Button>
             </Grid>
           </Grid.Container>
         </Card.Content>
