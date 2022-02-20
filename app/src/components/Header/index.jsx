@@ -2,8 +2,6 @@ import React, { useContext } from 'react';
 import { Button, Grid, Link, Spacer } from '@geist-ui/core';
 import GitHub from '@geist-ui/icons/github';
 import { CeramicContext } from '../../providers/CeramicContext';
-// import Sun from '@geist-ui/icons/sun';
-// import Moon from '@geist-ui/icons/moon';
 
 function Header() {
   const { authenticate, deauthenticate, isAuthenticated, isLoading } = useContext(CeramicContext);
@@ -26,9 +24,6 @@ function Header() {
             <Button loading={isLoading} auto scale={2/3} px={0.6} onClick={deauthenticate}>Disconnect / Deauthenticate</Button>
           </Grid>
         }
-        {/* <Grid> */}
-          {/* <Button icon={<Sun />} auto scale={2/3} px={0.6}>Light</Button> */}
-        {/* </Grid> */}
       </Grid.Container>
     </>
   );
