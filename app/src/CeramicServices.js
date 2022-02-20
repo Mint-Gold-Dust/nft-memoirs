@@ -1,6 +1,4 @@
 import React, { useContext, useEffect } from 'react';
-import logo from './logo.svg';
-import './styles/App.css';
 // import { useViewerConnection, useViewerID, usePublicRecord, RequestClient } from '@self.id/react';
 import { EthereumAuthProvider } from '@self.id/web';
 // import { EthereumContext } from './providers/EthereumContext';

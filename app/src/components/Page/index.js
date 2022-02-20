@@ -1,23 +1,12 @@
-import React from 'react';
-import { AutoComplete, Button, Card, Display, Grid, Input, Link, Page as BasePage, Spacer, Text } from '@geist-ui/core';
+import React, { useContext, useEffect, useState} from 'react';
+import { AutoComplete, Button, Card, Display, Grid, Link, Page as BasePage, Spacer, Text } from '@geist-ui/core';
 import Search from '@geist-ui/icons/search';
 import PlusSquare from '@geist-ui/icons/plusSquare';
-
-// Web3
-import { useViewerConnection, useViewerID } from '@self.id/react';
-import { EthereumAuthProvider } from '@self.id/web';
-
-// MUI
-import { SpeedDial, SpeedDialIcon, SpeedDialAction } from '@mui/material';
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import CloudOffIcon from '@mui/icons-material/CloudOff';
-import { EthereumContext } from '../../providers/EthereumContext';
+import { CeramicContext } from '../../providers/CeramicContext';
 import EditForm from '../EditForm';
 import Header from '../Header';
 
-const memoirs = [{
+const initMemoirs = [{
   title: 'Awesome NFT memoir, writen in Latin',
   content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida dictum fusce ut placerat.Habitant morbi tristique senectus et netus et malesuada fames ac. Quis blandit turpis cursus in hac habitasse platea dictumst. Id diam vel quam elementum pulvinar etiam non. Lobortis mattis aliquam faucibus purus in massa. Lorem sed risus ultricies tristique nulla. Dictum non consectetur a erat nam at. Cursus vitae congue mauris rhoncus aenean vel elit scelerisque mauris.',
 }, {
@@ -26,42 +15,10 @@ const memoirs = [{
 }];
 
 function Page() {
-  const [connection, connect, disconnect] = useViewerConnection();
-  const { ethereumProvider, isConnected, connectWallet } = React.useContext(EthereumContext);
-  const [actions, setActions] = React.useState([]);
-  const [isEditing, setIsEditing] = React.useState(false);
-  const [nfts, setNfts] = React.useState(memoirs);
+  const [isEditing, setIsEditing] = useState(false);
+  const [memoirs, setMemoirs] = useState(initMemoirs);
 
-  const authenticate = () => {
-    if (isConnected) {
-      ethereumProvider
-        .request({ method: 'eth_requestAccounts' })
-        .then((addresses) => new EthereumAuthProvider(ethereumProvider, addresses[0]))
-        .then(connect);
-    } else {
-      connectWallet();
-    }
-  };
-
-  React.useEffect(() => {
-    if (isConnected == true) {
-      authenticate();
-    }
-  }, [isConnected]);
-
-  React.useEffect(() => {
-    if (isConnected) {
-      const a = [
-        { icon: <AddBoxIcon />, name: 'Add Memoir', action: null },
-        { icon: <AccountCircleIcon />, name: 'Connected', action: null },
-        { icon: <CloudOffIcon />, name: 'Disconnect', action: disconnect() },
-      ];
-      setActions(a);
-    } else {
-      const a = [{ icon: <AccountBalanceWalletIcon />, name: 'Connect Wallet', action: authenticate() }];
-      setActions(a);
-    }
-  }, [isConnected]);
+  const { isAuthenticated } = useContext(CeramicContext);
 
   const onToggle = (state) => {
     setIsEditing(state ? state : !isEditing);
@@ -97,7 +54,7 @@ function Page() {
         </Display>
 
         {
-          isEditing && (<><EditForm onSubmit={(nft) => setNfts(nfts.unshift(nft))} onClose={() => onToggle(false)} /><Spacer h={1.2}/></>)
+          isEditing && (<><EditForm onSubmit={(memoir) => setMemoirs(memoirs.unshift(memoir))} onClose={() => onToggle(false)} /><Spacer h={1.2}/></>)
         }
 
         <Grid.Container justify="space-between">
@@ -117,7 +74,7 @@ function Page() {
         <Spacer h={1.5}/>
 
         {
-          nfts.map((memoir) => (
+          memoirs.map((memoir) => (
             <>
               <Card shadow hoverable>
                 <Text h4 my={0}>{memoir.title}</Text>
@@ -128,20 +85,6 @@ function Page() {
           ))
         }
       </BasePage.Content>
-
-      <SpeedDial
-        ariaLabel="SpeedDial"
-        sx={{ position: 'fixed', bottom: 16, right: 16 }}
-        icon={<SpeedDialIcon />}>
-        {actions.map((action) => (
-          <SpeedDialAction
-            key={action.name}
-            icon={action.icon}
-            tooltipTitle={action.name}
-            onClick={action.action}
-          />
-        ))}
-      </SpeedDial>
     </BasePage>
   );
 }

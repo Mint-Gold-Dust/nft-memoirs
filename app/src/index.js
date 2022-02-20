@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from '@self.id/react';
 import App from './App';
 import { EthereumContextProvider } from './providers/EthereumContext';
+import { CeramicContextProvider } from './providers/CeramicContext';
 import './styles/index.css';
 
 const config = {
@@ -12,9 +13,11 @@ const config = {
 ReactDOM.render(
   <React.StrictMode>
     <EthereumContextProvider>
-      <Provider client={config}>
-        <App />
-      </Provider>
+      <CeramicContextProvider>
+        <Provider client={config}>
+          <App />
+        </Provider>
+      </CeramicContextProvider>
     </EthereumContextProvider>
   </React.StrictMode>,
   document.getElementById('root'),
