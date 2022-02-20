@@ -15,7 +15,7 @@ import { createMemoirs } from '../../CeramicServices';
 
 import Drawer from '../Drawer';
 
-function EditForm({ onClose }) {
+function EditForm({ onClose, onSubmit,  }) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [nft, setNft] = useState({});
@@ -27,10 +27,14 @@ function EditForm({ onClose }) {
     setNft(nft);
   };
 
-  const onSubmit = () => {
+  const onSubmitClick = () => {
     setIsLoading(true);
-    createMemoirs()
+    createMemoirs(did,{
+      title: title, 
+      content: content,
+    })
       .then(() => {
+        onSubmit(); 
         setIsLoading(false);
       })
       .catch(console.log)
@@ -85,7 +89,7 @@ function EditForm({ onClose }) {
               <Button auto onClick={onClose}>Cancel</Button>
             </Grid>
             <Grid padding={1}>
-              <Button loading={isLoading} disabled={isLoading} auto type="secondary" onClick={onSubmit} >Submit</Button>
+              <Button loading={isLoading} disabled={isLoading} auto type="secondary" onClick={onSubmitClick} >Submit</Button>
             </Grid>
           </Grid.Container>
         </Card.Content>
