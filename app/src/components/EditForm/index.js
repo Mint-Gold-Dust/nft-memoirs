@@ -11,8 +11,8 @@ import {
   Text,
   Textarea,
 } from '@geist-ui/core';
-import { createMemoirs } from '../../CeramicServices';
-import { useViewerConnection, useViewerID, usePublicRecord, RequestClient } from '@self.id/react';
+import { createMemoirs } from '../../services/ceramic';
+import { useViewerID } from '@self.id/react';
 
 
 import Drawer from '../Drawer';
@@ -26,20 +26,21 @@ function EditForm({ onClose, onSubmit,  }) {
 
   const did = useViewerID();
 
+  console.log(did);
 
   const onSelect = (nft) => {
     setIsDrawerOpen(false);
     setNft(nft);
   };
 
-  
+
   const onSubmitClick = () => {
     console.log('nft address',nft.contract.address)
     console.log('nft is',nft.id.tokenId)
 
     setIsLoading(true);
     createMemoirs(did,{
-      title: title, 
+      title: title,
       content: content,
       tokenAddress: {
         tokenAddress: nft.contract.address,
@@ -49,7 +50,7 @@ function EditForm({ onClose, onSubmit,  }) {
       .then((result) => {
         console.log('result', result)
         console.log('result.content',result.content)
-        onSubmit(result.content); 
+        onSubmit(result.content);
         setIsLoading(false);
       })
       .catch(console.log)

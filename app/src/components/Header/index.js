@@ -6,7 +6,7 @@ import { CeramicContext } from '../../providers/CeramicContext';
 // import Moon from '@geist-ui/icons/moon';
 
 function Header() {
-  const { authenticate, isAuthenticated } = useContext(CeramicContext);
+  const { authenticate, deauthenticate, isAuthenticated, isLoading } = useContext(CeramicContext);
 
   return (
     <>
@@ -18,11 +18,17 @@ function Header() {
           </Link>
         </Grid>
         <Grid>
-          <Button auto scale={2/3} px={0.6} onClick={authenticate} >{isAuthenticated ? 'Connected' : 'Connect Wallet'}</Button>
+          <Button loading={isLoading} disabled={isAuthenticated} auto scale={2/3} px={0.6} onClick={authenticate} >{isAuthenticated ? 'Wallet Connected' : 'Connect Wallet'}</Button>
         </Grid>
-        <Grid>
+        {
+          isAuthenticated &&
+          <Grid>
+            <Button loading={isLoading} auto scale={2/3} px={0.6} onClick={deauthenticate}>Disconnect / Deauthenticate</Button>
+          </Grid>
+        }
+        {/* <Grid> */}
           {/* <Button icon={<Sun />} auto scale={2/3} px={0.6}>Light</Button> */}
-        </Grid>
+        {/* </Grid> */}
       </Grid.Container>
     </>
   );

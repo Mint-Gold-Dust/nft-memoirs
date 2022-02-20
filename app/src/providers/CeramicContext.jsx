@@ -10,6 +10,7 @@ const CeramicContextProvider = ({ children, config = {} }) => {
     const { ethereumProvider, isConnected, connectWallet } = useContext(EthereumContext);
 
     const isAuthenticated = connection.status === 'connected';
+    const isLoading = connection.status === 'connecting';
 
     const authenticate = () => {
       if (isConnected) {
@@ -28,12 +29,19 @@ const CeramicContextProvider = ({ children, config = {} }) => {
       }
     }, [isConnected]);
 
+    useEffect(() => {
+      if (window && window.ethereum && !isConnected) {
+        authenticate();
+      }
+    }, []);
+
     return (
         <CeramicContext.Provider
             value={{
                 authenticate,
                 deauthenticate,
                 isAuthenticated,
+                isLoading,
             }}
         >
             { children }
