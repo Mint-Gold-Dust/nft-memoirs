@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState} from 'react';
-import { AutoComplete, Button, Card, Display, Grid, Link, Page as BasePage, Spacer, Text, useToasts } from '@geist-ui/core';
+import { AutoComplete, Button, Card, Display, Grid, Input, Image, Link, Page as BasePage, Spacer, Text, useToasts } from '@geist-ui/core';
 import Search from '@geist-ui/icons/search';
 import PlusSquare from '@geist-ui/icons/plusSquare';
 import { CeramicContext } from '../../providers/CeramicContext';
@@ -7,17 +7,18 @@ import EditForm from '../EditForm';
 import Header from '../Header';
 
 const initMemoirs = [{
-  title: 'Awesome NFT memoir, writen in Latin',
+  title: 'Awesome NFT memoir, written in Latin',
   content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida dictum fusce ut placerat.Habitant morbi tristique senectus et netus et malesuada fames ac. Quis blandit turpis cursus in hac habitasse platea dictumst. Id diam vel quam elementum pulvinar etiam non. Lobortis mattis aliquam faucibus purus in massa. Lorem sed risus ultricies tristique nulla. Dictum non consectetur a erat nam at. Cursus vitae congue mauris rhoncus aenean vel elit scelerisque mauris.',
 }, {
-  title: 'Awesome NFT memoir, writen in Latin',
+  title: 'Awesome NFT memoir, written in Latin',
   content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida dictum fusce ut placerat.Habitant morbi tristique senectus et netus et malesuada fames ac. Quis blandit turpis cursus in hac habitasse platea dictumst. Id diam vel quam elementum pulvinar etiam non. Lobortis mattis aliquam faucibus purus in massa. Lorem sed risus ultricies tristique nulla. Dictum non consectetur a erat nam at. Cursus vitae congue mauris rhoncus aenean vel elit scelerisque mauris.',
 }];
 
 function Page() {
   const [isEditing, setIsEditing] = useState(false);
   const [memoirs, setMemoirs] = useState(initMemoirs);
-  const { isAuthenticated, authenticate } = useContext(CeramicContext);
+  const [searchedMemoirs, setSearchedMemoirs] = useState(memoirs);
+  const { isLoading, isAuthenticated, authenticate } = useContext(CeramicContext);
   const { setToast } = useToasts();
 
   const onToggle = (state) => {
@@ -30,11 +31,23 @@ function Page() {
       //     handler: authenticate,
       //   }],
       // });
-      authenticate;
+      authenticate();
     } else {
       setIsEditing(state ? state : !isEditing);
     }
   };
+
+  const onSearch = (searchValue) => {
+    if(searchValue !== '') {
+      setSearchedMemoirs(memoirs.filter((memoir) => memoir.title.includes(searchValue) || memoir.content.includes(searchValue)));
+    } else {
+      setSearchedMemoirs(memoirs);
+    }
+  };
+
+  useEffect(() => {
+    setSearchedMemoirs(memoirs);
+  }, [memoirs]);
 
   return (
     <BasePage width="800px" padding={0}>
@@ -55,8 +68,8 @@ function Page() {
           }
           shadow
         >
-          <Text padding={3}>
-            <Text h2>Awesome NFT memoir, writen in Latin</Text>
+          <Text padding={2}>
+            <Text h2>Awesome NFT memoir, written in Latin</Text>
             <Text p font="1.3rem">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
               dolore magna aliqua. Quis ipsum suspendisse ultrices gravida dictum fusce ut placerat.Habitant morbi
@@ -65,11 +78,6 @@ function Page() {
               Lorem sed risus ultricies tristique nulla. Dictum non consectetur a erat nam at. Cursus vitae congue
               mauris rhoncus aenean vel elit scelerisque mauris.
             </Text>
-            Created at 2021-01-01 <br />
-            Created by{' '}
-            <Link href={`https://etherscan.io/address/${'0x247F9095DD018479EC2ca823DC2450708DD41558'}`}>
-              0x247...41558
-            </Link>
           </Text>
         </Display>
 
@@ -87,29 +95,33 @@ function Page() {
 
         <Grid.Container justify="space-between">
           <Grid xs={18}>
-            <AutoComplete icon={<Search />} scale={1.4} clearable placeholder="Search here" width="100%">
-              <AutoComplete.Searching>Loading results ...</AutoComplete.Searching>
-            </AutoComplete>
+            <Input icon={<Search />} scale={1.4} clearable placeholder="Search here" width="100%" onChange={(event) => onSearch(event.target.value)} />
           </Grid>
           <Grid xs={5}>
-            <Button icon={<PlusSquare />} type="secondary" ghost auto scale={1.2} onClick={onToggle}>
+            <Button icon={<PlusSquare />} type="secondary" ghost auto scale={1.2} onClick={onToggle} loading={isLoading}>
               Create Memoir
             </Button>
           </Grid>
         </Grid.Container>
         <Spacer h={1.5} />
-
-        {
-          memoirs.map((memoir, index) => (
-            <>
-              <Card key={index} shadow hoverable>
-                <Text h4 my={0}>{memoir.title}</Text>
-                <Text>{memoir.content}</Text>
-              </Card>
-              <Spacer h={0.5} />
-            </>
-          ))
-        }
+        {searchedMemoirs.map((memoir, index) => (
+          <>
+            <Card key={index} shadow hoverable>
+              <Grid.Container gap={.7}>
+                <Grid xs={5}>
+                  <Image src={memoirs.nft}  width="120px" height="160px" />
+                </Grid>
+                <Grid xs={17}>
+                  <Text>
+                    <Text h4 my={0}>{memoir.title}</Text>
+                    <Text>{memoir.content}</Text>
+                  </Text>
+                </Grid>
+              </Grid.Container>
+            </Card>
+            <Spacer h={0.5} />
+          </>
+        ))}
       </BasePage.Content>
     </BasePage>
   );

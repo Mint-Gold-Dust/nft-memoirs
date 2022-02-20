@@ -16,7 +16,7 @@ import { CeramicContext } from '../../providers/CeramicContext';
 import { createMemoirs } from '../../services/ceramic';
 import Drawer from '../Drawer';
 
-function EditForm({ onClose, onSubmit,  }) {
+function EditForm({ onClose, onSubmit }) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [nft, setNft] = useState({});
@@ -36,11 +36,12 @@ function EditForm({ onClose, onSubmit,  }) {
       title: title,
       content: content,
       tokenAddress: {
-        tokenAddress: nft.contract.address,
-        tokenId: nft.id.tokenId
+        tokenAddress: nft?.contract?.address,
+        tokenId: nft?.id?.tokenId
       }
     }).then((result) => {
         onSubmit(result.content);
+        onClose();
       })
       .catch(console.error)
       .finally(() => {
@@ -63,9 +64,6 @@ function EditForm({ onClose, onSubmit,  }) {
               </Link>
             </Grid>
           </Grid.Container>
-          {/* <Spacer h={.5}/>
-          <Text my={0} h5>Title</Text>
-          <Spacer h={.3}/> */}
           <Input
             padding={1}
             paddingTop={0}
@@ -77,9 +75,6 @@ function EditForm({ onClose, onSubmit,  }) {
           >
             Title
           </Input>
-          {/* <Spacer h={.5}/> */}
-          {/* <Text my={0} h5>Content</Text> */}
-          {/* <Spacer h={.3}/> */}
           <Textarea
             placeholder="Write an memoir for an NFT"
             value={content}
