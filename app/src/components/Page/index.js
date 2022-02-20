@@ -34,7 +34,11 @@ function Page() {
           title="nft-memoirs"
           caption={
             <>
-              Welcome to <Text span b>nft-memoirs</Text>, start sharing!
+              Welcome to{' '}
+              <Text span b>
+                nft-memoirs
+              </Text>
+              , start sharing!
             </>
           }
           shadow
@@ -42,27 +46,37 @@ function Page() {
           <Text padding={3}>
             <Text h2>Awesome NFT memoir, writen in Latin</Text>
             <Text p font="1.3rem">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              Quis ipsum suspendisse ultrices gravida dictum fusce ut placerat.Habitant morbi tristique senectus et netus et malesuada fames ac.
-              Quis blandit turpis cursus in hac habitasse platea dictumst. Id diam vel quam elementum pulvinar etiam non.
-              Lobortis mattis aliquam faucibus purus in massa. Lorem sed risus ultricies tristique nulla.
-              Dictum non consectetur a erat nam at. Cursus vitae congue mauris rhoncus aenean vel elit scelerisque mauris.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+              dolore magna aliqua. Quis ipsum suspendisse ultrices gravida dictum fusce ut placerat.Habitant morbi
+              tristique senectus et netus et malesuada fames ac. Quis blandit turpis cursus in hac habitasse platea
+              dictumst. Id diam vel quam elementum pulvinar etiam non. Lobortis mattis aliquam faucibus purus in massa.
+              Lorem sed risus ultricies tristique nulla. Dictum non consectetur a erat nam at. Cursus vitae congue
+              mauris rhoncus aenean vel elit scelerisque mauris.
             </Text>
             Created at 2021-01-01 <br />
-            Created by <Link href={`https://etherscan.io/address/${'0x247F9095DD018479EC2ca823DC2450708DD41558'}`}>0x247...41558</Link>
+            Created by{' '}
+            <Link href={`https://etherscan.io/address/${'0x247F9095DD018479EC2ca823DC2450708DD41558'}`}>
+              0x247...41558
+            </Link>
           </Text>
         </Display>
 
-        {
-          isEditing && (<><EditForm onSubmit={(memoir) => setMemoirs(memoirs.unshift(memoir))} onClose={() => onToggle(false)} /><Spacer h={1.2}/></>)
-        }
+        {isEditing && (
+          <>
+            <EditForm
+              onSubmit={(memoir) => {
+                setMemoirs([memoir, ...memoirs]);
+              }}
+              onClose={() => onToggle(false)}
+            />
+            <Spacer h={1.2} />
+          </>
+        )}
 
         <Grid.Container justify="space-between">
           <Grid xs={18}>
             <AutoComplete icon={<Search />} scale={1.4} clearable placeholder="Search here" width="100%">
-              <AutoComplete.Searching>
-                Loading results ...
-              </AutoComplete.Searching>
+              <AutoComplete.Searching>Loading results ...</AutoComplete.Searching>
             </AutoComplete>
           </Grid>
           <Grid xs={5}>
@@ -71,7 +85,7 @@ function Page() {
             </Button>
           </Grid>
         </Grid.Container>
-        <Spacer h={1.5}/>
+        <Spacer h={1.5} />
 
         {
           memoirs.map((memoir) => (

@@ -12,25 +12,44 @@ import {
   Textarea,
 } from '@geist-ui/core';
 import { createMemoirs } from '../../CeramicServices';
+import { useViewerConnection, useViewerID, usePublicRecord, RequestClient } from '@self.id/react';
+
 
 import Drawer from '../Drawer';
 
-function EditForm({ onClose }) {
+function EditForm({ onClose, onSubmit,  }) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [nft, setNft] = useState({});
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
+  const did = useViewerID();
+
+
   const onSelect = (nft) => {
     setIsDrawerOpen(false);
     setNft(nft);
   };
 
-  const onSubmit = () => {
+  
+  const onSubmitClick = () => {
+    console.log('nft address',nft.contract.address)
+    console.log('nft is',nft.id.tokenId)
+
     setIsLoading(true);
-    createMemoirs()
-      .then(() => {
+    createMemoirs(did,{
+      title: title, 
+      content: content,
+      tokenAddress: {
+        tokenAddress: nft.contract.address,
+        tokenId: nft.id.tokenId
+      }
+    })
+      .then((result) => {
+        console.log('result', result)
+        console.log('result.content',result.content)
+        onSubmit(result.content); 
         setIsLoading(false);
       })
       .catch(console.log)
@@ -85,7 +104,7 @@ function EditForm({ onClose }) {
               <Button auto onClick={onClose}>Cancel</Button>
             </Grid>
             <Grid padding={1}>
-              <Button loading={isLoading} disabled={isLoading} auto type="secondary" onClick={onSubmit} >Submit</Button>
+              <Button loading={isLoading} disabled={isLoading} auto type="secondary" onClick={onSubmitClick} >Submit</Button>
             </Grid>
           </Grid.Container>
         </Card.Content>
