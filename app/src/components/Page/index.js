@@ -30,7 +30,7 @@ function Page() {
   const { ethereumProvider, isConnected, connectWallet } = React.useContext(EthereumContext);
   const [actions, setActions] = React.useState([]);
   const [isEditing, setIsEditing] = React.useState(false);
-  const did = useViewerID();
+  const [nfts, setNfts] = React.useState(memoirs);
 
   const authenticate = () => {
     if (isConnected) {
@@ -97,7 +97,7 @@ function Page() {
         </Display>
 
         {
-          isEditing && (<><EditForm onClose={() => onToggle(false)} /><Spacer h={1.2}/></>)
+          isEditing && (<><EditForm onSubmit={(nft) => setNfts(nfts.unshift(nft))} onClose={() => onToggle(false)} /><Spacer h={1.2}/></>)
         }
 
         <Grid.Container justify="space-between">
@@ -117,7 +117,7 @@ function Page() {
         <Spacer h={1.5}/>
 
         {
-          memoirs.map((memoir) => (
+          nfts.map((memoir) => (
             <>
               <Card shadow hoverable>
                 <Text h4 my={0}>{memoir.title}</Text>
