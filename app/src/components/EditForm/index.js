@@ -11,6 +11,7 @@ import {
   Text,
   Textarea,
 } from '@geist-ui/core';
+import { createMemoirs } from '../../CeramicServices';
 
 import Drawer from '../Drawer';
 
@@ -26,6 +27,18 @@ function EditForm({ onClose }) {
     setNft(nft);
   };
 
+  const onSubmit = () => {
+    setIsLoading(true);
+    createMemoirs()
+      .then(() => {
+        setIsLoading(false);
+      })
+      .catch(console.log)
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
   return (
     <>
       <Card>
@@ -36,7 +49,7 @@ function EditForm({ onClose }) {
               <Description px={.5} scale={1.4} title={nft?.title || ''} content={nft?.description ? (nft.description.length > 58 ? nft.description.slice(0, 55) + ' ...' : nft.description) : ''} />
             </Grid>
             <Grid padding={1} xs={5}>
-              <Link mx="auto" width="100%" block href="#" onClick={() => setIsDrawerOpen(true)}>
+              <Link mx="auto" width="100%" block href="#" onClick={() => setIsDrawerOpen(true)} disabled={isLoading}>
                 <Text mx="auto">{ nft?.title ? 'Change NFT' : 'Pick your NFT'}</Text>
               </Link>
             </Grid>
@@ -51,6 +64,7 @@ function EditForm({ onClose }) {
             value={title}
             onChange={(event) => setTitle(event.target.value)}
             width="100%"
+            disabled={isLoading}
           >
             Title
           </Input>
@@ -63,6 +77,7 @@ function EditForm({ onClose }) {
             onChange={(event) => setContent(event.target.value)}
             width="100%"
             height="124px"
+            disabled={isLoading}
           />
           <Spacer />
           <Grid.Container justify="space-between">
@@ -70,7 +85,7 @@ function EditForm({ onClose }) {
               <Button auto onClick={onClose}>Cancel</Button>
             </Grid>
             <Grid padding={1}>
-              <Button loading={isLoading} auto type="secondary" onClick={() => setIsLoading(true)}>Submit</Button>
+              <Button loading={isLoading} disabled={isLoading} auto type="secondary" onClick={onSubmit}>Submit</Button>
             </Grid>
           </Grid.Container>
         </Card.Content>

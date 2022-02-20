@@ -1,6 +1,7 @@
 import React from 'react';
 import { AutoComplete, Button, Card, Display, Grid, Input, Link, Page as BasePage, Spacer, Text } from '@geist-ui/core';
 import Search from '@geist-ui/icons/search';
+import PlusSquare from '@geist-ui/icons/plusSquare';
 
 // Web3
 import { useViewerConnection, useViewerID } from '@self.id/react';
@@ -14,6 +15,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CloudOffIcon from '@mui/icons-material/CloudOff';
 import { EthereumContext } from '../../providers/EthereumContext';
 import EditForm from '../EditForm';
+import Header from '../Header';
 
 const memoirs = [{
   title: 'Awesome NFT memoir, writen in Latin',
@@ -76,77 +78,79 @@ function Page() {
 
   return (
     <BasePage width="800px" padding={0}>
-      <Display
-        title="nft-memoirs"
-        caption={
-          <>
-            Welcome to <Text span b>nft-memoirs</Text>, start sharing!
-          </>
-        }
-        shadow
-      >
-        <Text padding={3}>
-          <Text h2>Awesome NFT memoir, writen in Latin</Text>
-          <Text p font="1.3rem">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            Quis ipsum suspendisse ultrices gravida dictum fusce ut placerat.Habitant morbi tristique senectus et netus et malesuada fames ac.
-            Quis blandit turpis cursus in hac habitasse platea dictumst. Id diam vel quam elementum pulvinar etiam non.
-            Lobortis mattis aliquam faucibus purus in massa. Lorem sed risus ultricies tristique nulla.
-            Dictum non consectetur a erat nam at. Cursus vitae congue mauris rhoncus aenean vel elit scelerisque mauris.
+      <BasePage.Header padding={0}>
+        <Header />
+      </BasePage.Header>
+      <BasePage.Content padding={0}>
+        <Display
+          title="nft-memoirs"
+          caption={
+            <>
+              Welcome to <Text span b>nft-memoirs</Text>, start sharing!
+            </>
+          }
+          shadow
+        >
+          <Text padding={3}>
+            <Text h2>Awesome NFT memoir, writen in Latin</Text>
+            <Text p font="1.3rem">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              Quis ipsum suspendisse ultrices gravida dictum fusce ut placerat.Habitant morbi tristique senectus et netus et malesuada fames ac.
+              Quis blandit turpis cursus in hac habitasse platea dictumst. Id diam vel quam elementum pulvinar etiam non.
+              Lobortis mattis aliquam faucibus purus in massa. Lorem sed risus ultricies tristique nulla.
+              Dictum non consectetur a erat nam at. Cursus vitae congue mauris rhoncus aenean vel elit scelerisque mauris.
+            </Text>
+            Created at 2021-01-01 <br />
+            Created by <Link href={`https://etherscan.io/address/${'0x247F9095DD018479EC2ca823DC2450708DD41558'}`}>0x247...41558</Link>
           </Text>
-          Created at 2021-01-01 <br />
-          Created by <Link href={`https://etherscan.io/address/${'0x247F9095DD018479EC2ca823DC2450708DD41558'}`}>0x247...41558</Link>
-        </Text>
-      </Display>
+        </Display>
 
-      {
-        isEditing && (<><EditForm onClose={() => onToggle(false)} /><Spacer h={1.2}/></>)
-      }
+        {
+          isEditing && (<><EditForm onClose={() => onToggle(false)} /><Spacer h={1.2}/></>)
+        }
 
-      <Grid.Container justify="space-between" width="100%">
-        <Grid xs={18}>
-          <AutoComplete icon={<Search />} scale={1.2} clearable placeholder="Search here" width="100%">
-            <AutoComplete.Searching>
-              Loading results ...
-            </AutoComplete.Searching>
-          </AutoComplete>
-        </Grid>
-        <Grid xs={6}>
-          <Button type="secondary" ghost auto scale={1.2} onClick={onToggle}>
-            + Memoir
-          </Button>
-        </Grid>
-      </Grid.Container>
+        <Grid.Container justify="space-between">
+          <Grid xs={18}>
+            <AutoComplete icon={<Search />} scale={1.4} clearable placeholder="Search here" width="100%">
+              <AutoComplete.Searching>
+                Loading results ...
+              </AutoComplete.Searching>
+            </AutoComplete>
+          </Grid>
+          <Grid xs={5}>
+            <Button icon={<PlusSquare />} type="secondary" ghost auto scale={1.2} onClick={onToggle}>
+              Create Memoir
+            </Button>
+          </Grid>
+        </Grid.Container>
+        <Spacer h={1.5}/>
 
+        {
+          memoirs.map((memoir) => (
+            <>
+              <Card shadow hoverable>
+                <Text h4 my={0}>{memoir.title}</Text>
+                <Text>{memoir.content}</Text>
+              </Card>
+              <Spacer h={0.5} />
+            </>
+          ))
+        }
+      </BasePage.Content>
 
-      <div>
-        <SpeedDial
-          ariaLabel="SpeedDial"
-          sx={{ position: 'fixed', bottom: 16, right: 16 }}
-          icon={<SpeedDialIcon />}>
-          {actions.map((action) => (
-            <SpeedDialAction
-              key={action.name}
-              icon={action.icon}
-              tooltipTitle={action.name}
-              onClick={action.action}
-            />
-          ))}
-        </SpeedDial>
-      </div>
-
-      {
-        memoirs.map((memoir) => (
-          <>
-            <Card shadow hoverable>
-              <Text h4 my={0}>{memoir.title}</Text>
-              <Text>{memoir.content}</Text>
-            </Card>
-            <Spacer h={0.5} />
-          </>
-        ))
-      }
-
+      <SpeedDial
+        ariaLabel="SpeedDial"
+        sx={{ position: 'fixed', bottom: 16, right: 16 }}
+        icon={<SpeedDialIcon />}>
+        {actions.map((action) => (
+          <SpeedDialAction
+            key={action.name}
+            icon={action.icon}
+            tooltipTitle={action.name}
+            onClick={action.action}
+          />
+        ))}
+      </SpeedDial>
     </BasePage>
   );
 }
