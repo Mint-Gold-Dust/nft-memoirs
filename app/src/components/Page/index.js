@@ -1,11 +1,10 @@
 import React from 'react';
-import { AutoComplete, Card, Display, Link, Page as BasePage, Spacer, Text } from '@geist-ui/core';
+import { AutoComplete, Button, Card, Display, Grid, Input, Link, Page as BasePage, Spacer, Text } from '@geist-ui/core';
 import Search from '@geist-ui/icons/search';
 
 // Web3
-import { useViewerConnection } from '@self.id/react';
+import { useViewerConnection, useViewerID } from '@self.id/react';
 import { EthereumAuthProvider } from '@self.id/web';
-import { EthereumContext } from '../../providers/EthereumContext';
 
 // MUI
 import { SpeedDial, SpeedDialIcon, SpeedDialAction } from '@mui/material'
@@ -14,6 +13,8 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CloudOffIcon from '@mui/icons-material/CloudOff';
 import {createMemoirs,createSchema, loadDoc} from './CeramicServices'
+import { EthereumContext } from '../../providers/EthereumContext';
+import EditForm from '../EditForm';
 
 const memoirs = [{
   title: 'Awesome NFT memoir, writen in Latin',
@@ -27,7 +28,8 @@ function Page() {
   const [connection, connect, disconnect] = useViewerConnection();
   const { ethereumProvider, isConnected, connectWallet } = React.useContext(EthereumContext);
   const [actions, setActions] = React.useState([]);
-
+  const [isEditing, setIsEditing] = React.useState(false);
+  const did = useViewerID();
 
   const authenticate = () => {
     if (isConnected) {
@@ -46,16 +48,24 @@ function Page() {
   }, [isConnected]);
 
   React.useEffect(() => {
+    if (connection.status === 'connected') {
+
+      did.client.tileLoader.load('k3y52l7qbv1fryp1rm81xzo0opjdgtr5m1geglimd93dhx76x7y3cw5yh49lo0d8g')
+        .then(console.log);
+    }
+  }, [connection.status]);
+
+  React.useEffect(() => {
     if (isConnected) {
       const a = [
         { icon: <AddBoxIcon />, name: 'Add Memoir', action: null },
         { icon: <AccountCircleIcon />, name: 'Connected', action: null },
-        { icon: <CloudOffIcon />, name: 'Disconnect', action: disconnect() }
+        { icon: <CloudOffIcon />, name: 'Disconnect', action: disconnect() },
       ]
       setActions(a)
     } else {
       const a = [
-        { icon: <AccountBalanceWalletIcon />, name: 'Connect Wallet', action: authenticate() }
+        { icon: <AccountBalanceWalletIcon />, name: 'Connect Wallet', action: authenticate() },
       ]
       setActions(a)
     }
@@ -65,6 +75,9 @@ function Page() {
     const 
 
   }
+  const onToggle = (state) => {
+    setIsEditing(state ? state : !isEditing);
+  };
 
   return (
     <BasePage width="800px" padding={0}>
@@ -91,11 +104,25 @@ function Page() {
         </Text>
       </Display>
 
-      <AutoComplete icon={<Search />} scale={3 / 2} clearable placeholder="Search here" width="100%">
-        <AutoComplete.Searching>
-          Loading results ...
-        </AutoComplete.Searching>
-      </AutoComplete>
+      {
+        isEditing && (<><EditForm onClose={() => onToggle(false)} /><Spacer h={1.2}/></>)
+      }
+
+      <Grid.Container justify="space-between" width="100%">
+        <Grid xs={18}>
+          <AutoComplete icon={<Search />} scale={1.2} clearable placeholder="Search here" width="100%">
+            <AutoComplete.Searching>
+              Loading results ...
+            </AutoComplete.Searching>
+          </AutoComplete>
+        </Grid>
+        <Grid xs={6}>
+          <Button type="secondary" ghost auto scale={1.2} onClick={onToggle}>
+            + Memoir
+          </Button>
+        </Grid>
+      </Grid.Container>
+
 
       <div>
         <SpeedDial
