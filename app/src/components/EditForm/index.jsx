@@ -33,12 +33,12 @@ function EditForm({ onClose, onSubmit }) {
   const onSubmitClick = () => {
     setIsLoading(true);
     createMemoirs(viewerId, {
-      title: title,
-      content: content,
+      title,
+      content,
       tokenAddress: {
         tokenAddress: nft?.contract?.address,
-        tokenId: nft?.id?.tokenId
-      }
+        tokenId: nft?.id?.tokenId,
+      },
     }).then((result) => {
         onSubmit(result.content);
         onClose();
@@ -56,7 +56,7 @@ function EditForm({ onClose, onSubmit }) {
           <Grid.Container justify="space-between">
             <Grid padding={1} xs={19}>
               <Avatar scale={2} text="NFT" isSquare src={nft?.media?.[0]?.uri?.gateway}/>
-              <Description px={.5} scale={1.4} title={nft?.title || ''} content={nft?.description ? (nft.description.length > 58 ? nft.description.slice(0, 55) + ' ...' : nft.description) : ''} />
+              <Description px={.5} scale={1.4} title={nft?.title || ''} content={nft?.description ? (nft.description.length > 58 ? `${nft.description.slice(0, 55)  } ...` : nft.description) : ''} />
             </Grid>
             <Grid padding={1} xs={5}>
               <Link mx="auto" width="100%" block href="#" onClick={() => setIsDrawerOpen(true)} disabled={isLoading}>

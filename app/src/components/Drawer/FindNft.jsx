@@ -8,7 +8,7 @@ import {
   Loading,
   Spacer,
   Tag,
-  Tooltip
+  Tooltip,
 } from '@geist-ui/core';
 import Search from '@geist-ui/icons/search';
 

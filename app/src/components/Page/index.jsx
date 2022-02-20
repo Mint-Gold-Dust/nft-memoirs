@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState} from 'react';
-import { AutoComplete, Button, Card, Display, Grid, Input, Image, Link, Page as BasePage, Spacer, Text, useToasts } from '@geist-ui/core';
+import { Button, Card, Display, Grid, Input, Image, Link, Page as BasePage, Spacer, Text, /* useToasts */ } from '@geist-ui/core';
 import Search from '@geist-ui/icons/search';
 import PlusSquare from '@geist-ui/icons/plusSquare';
 import { CeramicContext } from '../../providers/CeramicContext';
@@ -19,7 +19,7 @@ function Page() {
   const [memoirs, setMemoirs] = useState(initMemoirs);
   const [searchedMemoirs, setSearchedMemoirs] = useState(memoirs);
   const { isLoading, isAuthenticated, authenticate } = useContext(CeramicContext);
-  const { setToast } = useToasts();
+  // const { setToast } = useToasts();
 
   const onToggle = (state) => {
     if(!isAuthenticated) {
@@ -33,7 +33,7 @@ function Page() {
       // });
       authenticate();
     } else {
-      setIsEditing(state ? state : !isEditing);
+      setIsEditing(state || !isEditing);
     }
   };
 

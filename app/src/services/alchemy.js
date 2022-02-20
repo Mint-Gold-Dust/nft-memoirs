@@ -8,21 +8,19 @@ const requestOptions = {
 };
 
 const getNft = (contract, tokenId) =>
-  fetch( `${ALCHEMY_BASE_URL}/getNFTMetadata?` +
-    (contract ? `&contractAddress=${contract}` : '') +
-    (tokenId ? `&tokenId=${tokenId}` : ''),
-  requestOptions)
-    .then((response) => response.json());
+  fetch(
+    `${ALCHEMY_BASE_URL}/getNFTMetadata?${contract ? `&contractAddress=${contract}` : ''}${
+      tokenId ? `&tokenId=${tokenId}` : ''
+    }`,
+    requestOptions,
+  ).then((response) => response.json());
 
 const getNfts = (owner, contract, pageKey) =>
-  fetch( `${ALCHEMY_BASE_URL}/getNFTs?withMetadata=true` +
-    (owner ? `&owner=${owner}` : '') +
-    (contract ? `&contractAddresses[]=${contract}` : '') +
-    (pageKey ? `&pageKey=${pageKey}` : ''),
-  requestOptions)
-    .then((response) => response.json());
+  fetch(
+    `${ALCHEMY_BASE_URL}/getNFTs?withMetadata=true${owner ? `&owner=${owner}` : ''}${
+      contract ? `&contractAddresses[]=${contract}` : ''
+    }${pageKey ? `&pageKey=${pageKey}` : ''}`,
+    requestOptions,
+  ).then((response) => response.json());
 
-export {
-  getNft,
-  getNfts,
-};
+export { getNft, getNfts };

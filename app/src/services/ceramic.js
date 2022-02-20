@@ -1,17 +1,7 @@
-const createMemoirs = (viewerId, content, schemaID) => {
-  return viewerId.client.tileLoader.create(content, { schemaID });
-};
+const createMemoirs = (viewerId, content, schemaID) => viewerId.client.tileLoader.create(content, { schemaID });
 
-const createSchema = (viewerId, schemaObject) => {
-    return viewerId.client.tileLoader.create(schemaObject);
-  };
+const createSchema = (viewerId, schemaObject) => viewerId.client.tileLoader.create(schemaObject);
 
-const loadDoc = (viewerId, id) => {
-  return  viewerId.client.tileLoader.load(id);
-};
+const loadDoc = (viewerId, id) => viewerId.client.tileLoader.load(id);
 
-export {
-  createMemoirs,
-  createSchema,
-  loadDoc,
-};
+export { createMemoirs, createSchema, loadDoc };

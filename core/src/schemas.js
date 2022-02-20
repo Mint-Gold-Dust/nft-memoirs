@@ -47,37 +47,7 @@ const memoirSchema = {
       },
     },
   },
-  required: [
-    'title',
-    'content',
-  ],
+  required: ['title', 'content'],
 };
 
-const nftSchema = {
-  $schema: 'http://json-schema.org/draft/2020-12/schema',
-  title: 'NFT',
-  description: 'A NFT which can be used to write memoirs about.',
-  type: 'object',
-  properties: {
-    tokenAddress: {
-      type: 'string',
-      title: 'tokenAddress',
-      pattern: '^0x[a-fA-F0-9]{40}$',
-    },
-    tokenId: {
-      type: 'number',
-      minimum: 0,
-      title: 'tokenId',
-    },
-  },
-  required: [
-    'tokenAddress',
-    'tokenId',
-  ],
-};
-
-export {
-  memoirSchema,
-  nftSchema,
-  rootSchema,
-};
+export { memoirSchema, rootSchema };

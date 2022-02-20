@@ -8,7 +8,7 @@ import {
   Loading,
   Spacer,
   Tag,
-  Tooltip
+  Tooltip,
 } from '@geist-ui/core';
 import Filter from '@geist-ui/icons/filter';
 import X from '@geist-ui/icons/x';
@@ -103,9 +103,7 @@ function SelectNft({ onSelect }) {
         }
         {isLoading && <Loading spaceRatio={1.5}>Loading ({loadingMessage})</Loading>}
         <Spacer h={1.5} />
-        {nfts.map((nft, index) => {
-          return <Nft nft={nft} onSelect={() => onSelect(nft)} key={index} />;
-        })}
+        {nfts.map((nft, index) => <Nft nft={nft} onSelect={() => onSelect(nft)} key={index} />)}
       </Drawer.Content>
     </>
   );
