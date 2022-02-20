@@ -13,7 +13,7 @@ ReactDOM.render(
   <React.StrictMode>
     <EthereumContextProvider>
       <Provider client={config}>
-          <App />
+        <App />
       </Provider>
     </EthereumContextProvider>
   </React.StrictMode>,

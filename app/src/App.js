@@ -1,5 +1,4 @@
-import React, { useContext, useEffect } from 'react';
-import logo from './logo.svg';
+import React, { useContext } from 'react';
 import './styles/App.css';
 import { useViewerConnection, useViewerID, usePublicRecord, RequestClient } from '@self.id/react';
 import { EthereumAuthProvider } from '@self.id/web';
@@ -48,19 +47,7 @@ function App() {
 
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <a onClick={() => authenticate()} role="link">
-          <p className="App-link">{connection.status === 'connecting' ? 'Connecting' : 'Connect and Authenticate'}</p>
-        </a>
-        {isConnected ? <p>{`Ethereum provider: ${ethereumProvider}`}</p> : null}
-        {connection.status === 'connected' ? <p>{`Authenticated seflID: ${connection.selfID}`}</p> : null}
-        {connection.status === 'connected' ? (
-          <button onClick={() => disconnect()}>Disconnect ({connection.selfID.id})</button> 
-        ) : null}
-      </header>
-    </div>
+    <Page />
   );
 }
 
