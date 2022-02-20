@@ -85,7 +85,7 @@ function EditForm({ onClose }) {
               <Button auto onClick={onClose}>Cancel</Button>
             </Grid>
             <Grid padding={1}>
-              <Button loading={isLoading} disabled={isLoading} auto type="secondary" onClick={onSubmit}>Submit</Button>
+              <Button loading={isLoading} disabled={isLoading} auto type="secondary" onClick={onSubmit} >Submit</Button>
             </Grid>
           </Grid.Container>
         </Card.Content>

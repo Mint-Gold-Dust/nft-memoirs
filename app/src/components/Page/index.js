@@ -8,7 +8,7 @@ import { useViewerConnection, useViewerID } from '@self.id/react';
 import { EthereumAuthProvider } from '@self.id/web';
 
 // MUI
-import { SpeedDial, SpeedDialIcon, SpeedDialAction } from '@mui/material'
+import { SpeedDial, SpeedDialIcon, SpeedDialAction } from '@mui/material';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -34,7 +34,8 @@ function Page() {
 
   const authenticate = () => {
     if (isConnected) {
-      ethereumProvider.request({ method: 'eth_requestAccounts' })
+      ethereumProvider
+        .request({ method: 'eth_requestAccounts' })
         .then((addresses) => new EthereumAuthProvider(ethereumProvider, addresses[0]))
         .then(connect);
     } else {
@@ -44,17 +45,9 @@ function Page() {
 
   React.useEffect(() => {
     if (isConnected == true) {
-      authenticate()
+      authenticate();
     }
   }, [isConnected]);
-
-  React.useEffect(() => {
-    if (connection.status === 'connected') {
-
-      did.client.tileLoader.load('k3y52l7qbv1fryp1rm81xzo0opjdgtr5m1geglimd93dhx76x7y3cw5yh49lo0d8g')
-        .then(console.log);
-    }
-  }, [connection.status]);
 
   React.useEffect(() => {
     if (isConnected) {
@@ -62,15 +55,13 @@ function Page() {
         { icon: <AddBoxIcon />, name: 'Add Memoir', action: null },
         { icon: <AccountCircleIcon />, name: 'Connected', action: null },
         { icon: <CloudOffIcon />, name: 'Disconnect', action: disconnect() },
-      ]
-      setActions(a)
+      ];
+      setActions(a);
     } else {
-      const a = [
-        { icon: <AccountBalanceWalletIcon />, name: 'Connect Wallet', action: authenticate() },
-      ]
-      setActions(a)
+      const a = [{ icon: <AccountBalanceWalletIcon />, name: 'Connect Wallet', action: authenticate() }];
+      setActions(a);
     }
-  }, [isConnected])
+  }, [isConnected]);
 
   const onToggle = (state) => {
     setIsEditing(state ? state : !isEditing);
