@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState} from 'react';
-import { AutoComplete, Button, Card, Display, Grid, Link, Page as BasePage, Spacer, Text } from '@geist-ui/core';
+import { AutoComplete, Button, Card, Display, Grid, Link, Page as BasePage, Spacer, Text, useToasts } from '@geist-ui/core';
 import Search from '@geist-ui/icons/search';
 import PlusSquare from '@geist-ui/icons/plusSquare';
 import { CeramicContext } from '../../providers/CeramicContext';
@@ -17,11 +17,23 @@ const initMemoirs = [{
 function Page() {
   const [isEditing, setIsEditing] = useState(false);
   const [memoirs, setMemoirs] = useState(initMemoirs);
-
-  const { isAuthenticated } = useContext(CeramicContext);
+  const { isAuthenticated, authenticate } = useContext(CeramicContext);
+  const { setToast } = useToasts();
 
   const onToggle = (state) => {
-    setIsEditing(state ? state : !isEditing);
+    if(!isAuthenticated) {
+      // setToast({
+      //   text: 'Your wallet needs to be connected and authenticated to do that action.',
+      //   delay: 2000,
+      //   actions: [{
+      //     name: 'Connect wallet',
+      //     handler: authenticate,
+      //   }],
+      // });
+      authenticate;
+    } else {
+      setIsEditing(state ? state : !isEditing);
+    }
   };
 
   return (
@@ -88,9 +100,9 @@ function Page() {
         <Spacer h={1.5} />
 
         {
-          memoirs.map((memoir) => (
+          memoirs.map((memoir, index) => (
             <>
-              <Card shadow hoverable>
+              <Card key={index} shadow hoverable>
                 <Text h4 my={0}>{memoir.title}</Text>
                 <Text>{memoir.content}</Text>
               </Card>

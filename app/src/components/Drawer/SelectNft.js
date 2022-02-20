@@ -103,8 +103,8 @@ function SelectNft({ onSelect }) {
         }
         {isLoading && <Loading spaceRatio={1.5}>Loading ({loadingMessage})</Loading>}
         <Spacer h={1.5} />
-        {nfts.map((nft) => {
-          return <Nft nft={nft} onSelect={() => onSelect(nft)} />;
+        {nfts.map((nft, index) => {
+          return <Nft nft={nft} onSelect={() => onSelect(nft)} key={index} />;
         })}
       </Drawer.Content>
     </>

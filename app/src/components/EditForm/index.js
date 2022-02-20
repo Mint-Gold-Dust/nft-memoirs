@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Avatar,
   Button,
@@ -11,10 +11,9 @@ import {
   Text,
   Textarea,
 } from '@geist-ui/core';
+
+import { CeramicContext } from '../../providers/CeramicContext';
 import { createMemoirs } from '../../services/ceramic';
-import { useViewerID } from '@self.id/react';
-
-
 import Drawer from '../Drawer';
 
 function EditForm({ onClose, onSubmit,  }) {
@@ -24,36 +23,26 @@ function EditForm({ onClose, onSubmit,  }) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
-  const did = useViewerID();
-
-  console.log(did);
+  const { viewerId } = useContext(CeramicContext);
 
   const onSelect = (nft) => {
     setIsDrawerOpen(false);
     setNft(nft);
   };
 
-
   const onSubmitClick = () => {
-    console.log('nft address',nft.contract.address)
-    console.log('nft is',nft.id.tokenId)
-
     setIsLoading(true);
-    createMemoirs(did,{
+    createMemoirs(viewerId, {
       title: title,
       content: content,
       tokenAddress: {
         tokenAddress: nft.contract.address,
         tokenId: nft.id.tokenId
       }
-    })
-      .then((result) => {
-        console.log('result', result)
-        console.log('result.content',result.content)
+    }).then((result) => {
         onSubmit(result.content);
-        setIsLoading(false);
       })
-      .catch(console.log)
+      .catch(console.error)
       .finally(() => {
         setIsLoading(false);
       });
