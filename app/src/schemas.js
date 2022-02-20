@@ -32,9 +32,18 @@ const memoirSchema = {
       maxLength: 420,
     },
     nft: {
-      type: 'string',
+      type: 'object',
       properties: {
-        minLength: 63,
+        tokenAddress: {
+          type: 'string',
+          title: 'tokenAddress',
+          pattern: '^0x[a-fA-F0-9]{40}$',
+        },
+        tokenId: {
+          type: 'number',
+          minimum: 0,
+          title: 'tokenId',
+        },
       },
     },
   },

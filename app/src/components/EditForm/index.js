@@ -23,6 +23,7 @@ function EditForm({ onClose, onSubmit,  }) {
   const [nft, setNft] = useState({});
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+
   const did = useViewerID();
 
 
@@ -31,14 +32,23 @@ function EditForm({ onClose, onSubmit,  }) {
     setNft(nft);
   };
 
+  
   const onSubmitClick = () => {
+    console.log('nft address',nft.contract.address)
+    console.log('nft is',nft.id.tokenId)
+
     setIsLoading(true);
     createMemoirs(did,{
       title: title, 
       content: content,
+      tokenAddress: {
+        tokenAddress: nft.contract.address,
+        tokenId: nft.id.tokenId
+      }
     })
       .then((result) => {
-        console.log('result')
+        console.log('result', result)
+        console.log('result.content',result.content)
         onSubmit(result.content); 
         setIsLoading(false);
       })
